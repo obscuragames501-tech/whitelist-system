@@ -1,1 +1,449 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFF Pro-Elite Dashboard | Türkiye Futbol Federasyonu</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
+    <style>
+        :root {
+            --bg-color: rgb(31, 31, 31);
+            --card-bg: rgb(45, 45, 45);
+            --accent-color: rgb(255, 179, 0);
+            --hover-color: rgb(57, 57, 57);
+            --text-main: rgb(255, 255, 255);
+            --text-dark: rgb(31, 31, 31);
+            --tff-red: #e30613;
+            --tff-blue: #004a99;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Giriş Splash Ekranı --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--tff-blue), #001a33);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        .loader-logo {
+            width: 150px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 20px gold); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
+        }
+
+        /* --- Navbar --- */
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=2000') no-repeat center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        .hero span {
+            color: var(--accent-color);
+        }
+
+        /* --- Main Content Grid --- */
+        .container {
+            padding: 2rem 5%;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.4s;
+            border-left: 5px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: var(--hover-color);
+            border-left-color: var(--accent-color);
+        }
+
+        h2.section-title {
+            margin-bottom: 20px;
+            font-family: 'Oswald';
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- Puan Durumu Tablosu --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: var(--accent-color);
+            color: var(--text-dark);
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .team-row:hover {
+            background: rgba(255, 179, 0, 0.1);
+            cursor: pointer;
+        }
+
+        /* --- Şampiyonlar Bölümü --- */
+        .champions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .champ-card {
+            background: var(--glass);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stars {
+            color: gold;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        /* --- Fikstür Listesi --- */
+        .fixture-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--glass);
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .fixture-team {
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .vs {
+            background: var(--accent-color);
+            color: black;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #111;
+            padding: 50px 5%;
+            margin-top: 50px;
+            text-align: center;
+            border-top: 3px solid var(--tff-red);
+        }
+
+        .social-icons {
+            font-size: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <img src="https://upload.wikimedia.org/wikipedia/tr/thumb/0/06/Türkiye_Futbol_Federasyonu_logosu.png/600px-Türkiye_Futbol_Federasyonu_logosu.png" class="loader-logo" alt="TFF">
+        <h2 style="margin-top:20px; letter-spacing: 5px;">TÜRKİYE FUTBOL VERİ SİSTEMİ</h2>
+        <p style="color: gold;">Yükleniyor...</p>
+    </div>
+
+    <audio id="hoverSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+    <nav>
+        <div class="logo-area">
+            <img src="https://upload.wikimedia.org/wikipedia/tr/thumb/0/06/Türkiye_Futbol_Federasyonu_logosu.png/40px-Türkiye_Futbol_Federasyonu_logosu.png" alt="Logo">
+            <h3 style="color: var(--accent-color)">TFF HUB</h3>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="snd-hover">Anasayfa</a></li>
+            <li><a href="#fixtures" class="snd-hover">Fikstür</a></li>
+            <li><a href="#stats" class="snd-hover">İstatistikler</a></li>
+            <li><a href="#champs" class="snd-hover">Şampiyonlar</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1 class="animate__animated animate__fadeInDown">TÜRKİYE <span>SÜPER LİG</span></h1>
+        <p class="animate__animated animate__fadeInUp">Tutku, Mücadele, Zafer.</p>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="card animate__animated animate__slideInLeft">
+                <h2 class="section-title"><i class="fas fa-table"></i> Canlı Puan Durumu</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sıra</th>
+                            <th>Takım</th>
+                            <th>O</th>
+                            <th>G</th>
+                            <th>B</th>
+                            <th>M</th>
+                            <th>P</th>
+                        </tr>
+                    </thead>
+                    <tbody id="puan-tablosu">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="card animate__animated animate__slideInLeft" style="margin-top: 30px;" id="champs">
+                <h2 class="section-title"><i class="fas fa-trophy"></i> Ebedi Şampiyonluklar</h2>
+                <div class="champions-grid" id="champions-list">
+                    </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="card animate__animated animate__slideInRight" id="fixtures">
+                <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Gelecek Maçlar</h2>
+                <div id="fixture-list">
+                    </div>
+            </div>
+
+            <div class="card animate__animated animate__slideInRight" style="margin-top: 30px;">
+                <h2 class="section-title"><i class="fas fa-newspaper"></i> Son Haberler</h2>
+                <div style="font-size: 0.9rem;">
+                    <p><strong>•</strong> Milli takım kamp kadrosu açıklandı.</p>
+                    <hr style="margin: 10px 0; opacity: 0.2;">
+                    <p><strong>•</strong> VAR kayıtları YouTube üzerinden yayınlandı.</p>
+                    <hr style="margin: 10px 0; opacity: 0.2;">
+                    <p><strong>•</strong> Süper Kupa finali tarihi belli oldu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <i class="fab fa-twitter snd-hover"></i>
+            <i class="fab fa-instagram snd-hover"></i>
+            <i class="fab fa-youtube snd-hover"></i>
+        </div>
+        <p>&copy; 2026 Türkiye Futbol Federasyonu Veri Portalı. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+        // Veri Seti
+        const takimlar = [
+            { sira: 1, ad: "Galatasaray", o: 30, g: 25, b: 3, m: 2, p: 78, yildiz: 4, kupa: 24 },
+            { sira: 2, ad: "Fenerbahçe", o: 30, g: 24, b: 4, m: 2, p: 76, yildiz: 3, kupa: 19 },
+            { sira: 3, ad: "Beşiktaş", o: 30, g: 18, b: 6, m: 6, p: 60, yildiz: 3, kupa: 16 },
+            { sira: 4, ad: "Trabzonspor", o: 30, g: 16, b: 5, m: 9, p: 53, yildiz: 1, kupa: 7 },
+            { sira: 5, ad: "Başakşehir", o: 30, g: 14, b: 7, m: 9, p: 49, yildiz: 0, kupa: 1 }
+        ];
+
+        const fikstur = [
+            { ev: "Galatasaray", dep: "Beşiktaş", saat: "20:00" },
+            { ev: "Fenerbahçe", dep: "Trabzonspor", saat: "19:00" },
+            { ev: "Samsunspor", dep: "Eyüpspor", saat: "16:00" },
+            { ev: "Kasımpaşa", dep: "Göztepe", saat: "21:45" }
+        ];
+
+        // Sesler
+        const hoverSnd = document.getElementById('hoverSound');
+        const clickSnd = document.getElementById('clickSound');
+
+        // Ses Fonksiyonları
+        function playHover() {
+            hoverSnd.currentTime = 0;
+            hoverSnd.volume = 0.2;
+            hoverSnd.play().catch(e => {});
+        }
+
+        function playClick() {
+            clickSnd.currentTime = 0;
+            clickSnd.play().catch(e => {});
+        }
+
+        // Puan Tablosunu Doldur
+        function tabloDoldur() {
+            const tbody = document.getElementById('puan-tablosu');
+            takimlar.forEach(t => {
+                const row = document.createElement('tr');
+                row.className = 'team-row snd-click';
+                row.innerHTML = `
+                    <td>${t.sira}</td>
+                    <td><strong>${t.ad}</strong></td>
+                    <td>${t.o}</td>
+                    <td>${t.g}</td>
+                    <td>${t.b}</td>
+                    <td>${t.m}</td>
+                    <td style="color:var(--accent-color); font-weight:bold;">${t.p}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Şampiyonlukları Doldur
+        function sampiyonlariDoldur() {
+            const container = document.getElementById('champions-list');
+            takimlar.filter(t => t.kupa > 0).forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'champ-card snd-hover';
+                let stars = '⭐'.repeat(t.yildiz);
+                div.innerHTML = `
+                    <h3>${t.ad}</h3>
+                    <div class="stars">${stars}</div>
+                    <p style="font-size: 0.8rem; margin-top:5px;">${t.kupa} Şampiyonluk</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Fikstürü Doldur
+        function fiksturDoldur() {
+            const container = document.getElementById('fixture-list');
+            fikstur.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'fixture-item snd-hover';
+                div.innerHTML = `
+                    <div class="fixture-team">${m.ev}</div>
+                    <div class="vs">${m.saat}</div>
+                    <div class="fixture-team">${m.dep}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Event Listeners (Ses için dinamik bağlama)
+        function setupEventListeners() {
+            document.querySelectorAll('.snd-hover').forEach(el => {
+                el.addEventListener('mouseenter', playHover);
+            });
+            document.querySelectorAll('.snd-click, .fixture-item, .team-row').forEach(el => {
+                el.addEventListener('mousedown', playClick);
+                el.addEventListener('mouseenter', playHover);
+            });
+        }
+
+        // Başlatma
+        window.addEventListener('load', () => {
+            tabloDoldur();
+            sampiyonlariDoldur();
+            fiksturDoldur();
+            setupEventListeners();
+
+            // Splash Screen'i kaldır
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                }, 1000);
+            }, 2500);
+        });
+
+    </script>
+</body>
+</html>
